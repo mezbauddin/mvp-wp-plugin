@@ -1,12 +1,15 @@
 <?php
 /*
-Plugin Name: Microsoft MVP
-Description: Append MVP ID to Microsoft links + click tracking + bulk tools.
+Plugin Name: MVP Link Tracker
+Description: Append your MVP WT.mc_id to Microsoft links, track clicks, and manage renewal insights.
 Version: 2.0.1
 Author: Mezba Uddin
 Requires at least: 6.5
-Tested up to: 6.5
+Tested up to: 6.8
 Requires PHP: 7.4
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: mvp-link-tracker-and-analytics
 */
 
 if (!defined('ABSPATH')) exit;

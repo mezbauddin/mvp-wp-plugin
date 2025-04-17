@@ -1,12 +1,2 @@
-jQuery(document).ready(function($){
-  $('a').on('click', function(){
-    var href = $(this).attr('href');
-    if (href && href.includes("microsoft.com")) {
-      $.post(mvp_ajax.ajax_url, {
-        action: 'mvp_log_click',
-        nonce: mvp_ajax.nonce,
-        url: href
-      });
-    }
-  });
-});
+// click-tracker.js is now deprecated. All Microsoft link tracking and logging is handled by link-tracker.js.
+// This file is intentionally left blank for backward compatibility.
