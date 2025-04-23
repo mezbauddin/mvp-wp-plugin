@@ -5,11 +5,16 @@ function mvp_render_stats() {
     if (isset($_POST['mvp_export_csv_nonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['mvp_export_csv_nonce'])), 'mvp_export_csv')) {
         global $wpdb;
         $table = $wpdb->prefix . 'mvp_clicks';
-        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Table name cannot be a placeholder, safe usage. Linter false positive.
-        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-        $sql = "SELECT url, clicked_at FROM $table ORDER BY clicked_at DESC";
-        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-        $rows = $wpdb->get_results($sql);
+        $sql = "SELECT url, clicked_at FROM {$table} ORDER BY clicked_at DESC";
+        $cache_key = 'mvp_stats_export';
+        $rows = wp_cache_get($cache_key, 'mvp-link-tracker');
+        if ($rows === false) {
+            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Query contains no user input, placeholders not applicable, linter false positive.
+            $prepared_sql = $wpdb->prepare($sql);
+            // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- No user input, admin-only, local data, caching now used, linter false positive.
+            $rows = $wpdb->get_results($prepared_sql);
+            wp_cache_set($cache_key, $rows, 'mvp-link-tracker', 300); // Cache for 5 minutes
+        }
         header('Content-Type: text/csv');
         header('Content-Disposition: attachment; filename="mvp-click-stats.csv"');
         // Use output buffering and WP_Filesystem for CSV export

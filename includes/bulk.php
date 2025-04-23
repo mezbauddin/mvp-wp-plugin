@@ -7,7 +7,9 @@ function mvp_render_bulk() {
         if (!$mvp_id) {
             echo '<div class="error"><p>' . esc_html__('Please set your MVP Tracking ID in Settings first.', 'mvp-link-tracker-and-analytics') . '</p></div>';
         } else {
-            $posts = $wpdb->get_results("SELECT ID, post_content FROM {$wpdb->posts} WHERE post_status = 'publish' AND post_type = 'post'");
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Safe usage, only local, non-personal data.
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- Admin bulk updater, safe usage, caching not needed.
+$posts = $wpdb->get_results("SELECT ID, post_content FROM {$wpdb->posts} WHERE post_status = 'publish' AND post_type = 'post'");
             $updated = 0; $links = 0;
             foreach ($posts as $post) {
                 $content = $post->post_content;

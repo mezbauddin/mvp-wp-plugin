@@ -1,5 +1,7 @@
 === MVP Link Tracker ===
-Contributors: mezbauddin
+Author: Mezba Uddin
+Author URI: https://profiles.wordpress.org/mrmicrosoft/
+Contributors: mrmicrosoft
 Tags: mvp, tracking, analytics, gdpr, links
 Requires at least: 6.5
 Tested up to: 6.8

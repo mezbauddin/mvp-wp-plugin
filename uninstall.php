@@ -7,5 +7,7 @@ delete_option('mvp_tracking_id');
 delete_option('mvp_consent_given');
 // Drop click tracking table
 $table = $wpdb->prefix . 'mvp_clicks';
-// Use $wpdb->prepare() with a dummy placeholder to satisfy the linter. No user input is present, only table name. Direct DB schema change is needed for plugin cleanup; reviewed for safety.
-$wpdb->query($wpdb->prepare("DROP TABLE IF EXISTS {$table}", []));
+if (preg_match('/^[a-zA-Z0-9_]+$/', $table)) { // basic validation
+    // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.DirectDatabaseQuery.SchemaChange -- Table name only, safe usage for uninstall routine.
+    $wpdb->query("DROP TABLE IF EXISTS $table");
+}

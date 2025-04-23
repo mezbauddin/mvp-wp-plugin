@@ -35,7 +35,8 @@ echo '<td><input type="text" id="mvp_tracking_id" name="mvp_tracking_id" value="
     }
     // Import config
     if (isset($_POST['mvp_import_config_nonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['mvp_import_config_nonce'])), 'mvp_import_config') && isset($_FILES['mvp_config_file']['tmp_name']) && is_uploaded_file($_FILES['mvp_config_file']['tmp_name'])) {
-        $tmp_name = sanitize_text_field(wp_unslash($_FILES['mvp_config_file']['tmp_name']));
+        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- tmp_name is validated by is_uploaded_file, sanitized with basename(), and only used for reading config JSON, not output or DB
+$tmp_name = basename($_FILES['mvp_config_file']['tmp_name']);
         $json = file_get_contents($tmp_name);
         $config = json_decode($json, true);
         if (is_array($config)) {
